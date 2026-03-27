@@ -24,6 +24,12 @@ The model in this project (version V2/V3) follows a **Phoneme-Audio Alignment & 
 
 ## 2. Comprehensive Details on the L2-ARCTIC Dataset
 
+### Target path
+
+```Bash
+./data/raw/(put L2-Arctic here!)
+```
+
 This project uses **L2-ARCTIC**, a benchmark corpus in the field of English pronunciation research for L2 learners.
 
 ### Overview (Basic)
