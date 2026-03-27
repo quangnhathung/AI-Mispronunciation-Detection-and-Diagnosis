@@ -1,2 +1,10 @@
+# Data & model
 data/raw/
 checkpoints/
+
+
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+*.pyo
