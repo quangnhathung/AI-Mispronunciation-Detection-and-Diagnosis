@@ -29,11 +29,11 @@ def evaluate_model():
     )
 
     # 2. LOAD MÔ HÌNH TỐT NHẤT VỪA TRAIN
-    print("[*] Đang load trọng số best_mdd_model_v2.pt...")
+    print("[*] Đang load trọng số best_mdd_model_v3.pt...")
     vocab_size = 46 
     model = MDDModelV2(vocab_size=vocab_size).to(device)
     
-    model_path = "./checkpoints/best_mdd_model_v2.pt"
+    model_path = "./checkpoints/best_mdd_model_v3.pt"
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     
     # ĐẶC BIỆT QUAN TRỌNG: Chuyển mô hình sang chế độ đánh giá (tắt Dropout, Batch Norm)

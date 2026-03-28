@@ -35,7 +35,7 @@ if __name__ == "__main__":
                 "\nEpoch: "
                 ))
             os.system('cls' if os.name == 'nt' else 'clear')
-            train_model_v3(epoch=e)
+            train_model_v3(epochs=e)
         case 4:
             os.system('cls' if os.name == 'nt' else 'clear')
             predict()            
@@ -45,5 +45,3 @@ if __name__ == "__main__":
         case _:
             print("Invalid choice")
             os.system('cls' if os.name == 'nt' else 'clear')
-
-                   
