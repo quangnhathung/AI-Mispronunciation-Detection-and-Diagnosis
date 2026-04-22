@@ -3,6 +3,7 @@ from src.train.predict import predict
 from src.train.version.train_v2 import train_model_v2
 from src.train.test.evaluate import evaluate_model
 from src.train.version.train_v3 import train_model_v3
+from src.train.version.train_v4 import train_model_with_validation
 import os
 
 
@@ -12,8 +13,9 @@ if __name__ == "__main__":
         "[1] Train model v1.0\n"
         "[2] Train model v2.0\n"
         "[3] Train model v3.0\n"
-        "[4] Run predict(latest_v3.0)\n"
-        "[5] evaluate model(latest_v3.0)\n"
+        "[4] Train model v4.0 (add validate)\n"
+        "[5] Run predict(latest_v3.0)\n"
+        "[6] evaluate model(latest_v3.0)\n"
         "Choose: "
         ))
         
@@ -38,8 +40,11 @@ if __name__ == "__main__":
             train_model_v3(epochs=e)
         case 4:
             os.system('cls' if os.name == 'nt' else 'clear')
-            predict()            
+            train_model_with_validation()
         case 5:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            predict()            
+        case 6:
             os.system('cls' if os.name == 'nt' else 'clear')
             evaluate_model()
         case _:
