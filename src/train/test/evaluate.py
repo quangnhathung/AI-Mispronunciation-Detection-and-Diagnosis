@@ -10,11 +10,7 @@ def evaluate_model():
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # 1. ĐỊNH NGHĨA TẬP TEST KHÁCH QUAN (UNSEEN SPEAKERS)
     root_dir = "./data/raw"
-    # Lấy những người nói KHÔNG CÓ trong file train.py
-    # Giả sử bạn lấy THV (Tiếng Việt) và HKK (Tiếng Hàn)
-    #test_speakers = ["TLV", "TNI", "TXHC", "YBAA", "YDCK", "YKWK", "ZHAA"] 
     test_speakers = ["suitcase_corpus"] 
     
     print(f"[*] Đang load Test Dataset với các speakers: {test_speakers}...")
@@ -22,18 +18,18 @@ def evaluate_model():
     
     test_loader = DataLoader(
         test_dataset, 
-        batch_size=2, # Cứ để nhỏ để tránh quá tải VRAM
-        shuffle=False, # Khi test thì không cần xáo trộn dữ liệu
+        batch_size=2,
+        shuffle=False,
         collate_fn=MDDCollate(pad_phoneme_id=0),
         num_workers=2
     )
 
-    # 2. LOAD MÔ HÌNH TỐT NHẤT VỪA TRAIN
-    print("[*] Đang load trọng số best_mdd_model_v3.pt...")
+
+    print("[*] Đang load trọng số best_mdd_model_v4.pt...")
     vocab_size = 46 
     model = MDDModelV2(vocab_size=vocab_size).to(device)
     
-    model_path = "./checkpoints/best_mdd_model_v3.pt"
+    model_path = "./checkpoints/best_mdd_model_v4.pt"
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     
     # ĐẶC BIỆT QUAN TRỌNG: Chuyển mô hình sang chế độ đánh giá (tắt Dropout, Batch Norm)
@@ -90,15 +86,13 @@ def evaluate_model():
     recall = total_true_errors / (total_actual_errors + 1e-8)
     f1_score = 2 * (precision * recall) / (precision + recall + 1e-8)
 
-    print("\n" + "="*50)
-    print("BÁO CÁO KIỂM THỬ (TEST SET EVALUATION)")
-    print("="*50)
+    print("\n")
+    print("TEST SET EVALUATION")
     print(f"Tổng số âm vị đã kiểm tra : {total_valid_phonemes}")
     print(f"Tổng số lỗi thực tế có    : {total_actual_errors}")
     print(f"Số lỗi mô hình bắt trúng  : {total_true_errors}")
     print("-" * 50)
-    print(f"Độ chính xác tổng (Accuracy) : {accuracy:.4f} (Lưu ý: Chỉ số này thường ảo do mất cân bằng dữ liệu)")
+    print(f"Độ chính xác tổng (Accuracy) : {accuracy:.4f}")
     print(f"Độ chuẩn xác báo lỗi (Precision) : {precision:.4f} (Khả năng tránh báo động giả)")
     print(f"Độ bao phủ lỗi (Recall)      : {recall:.4f} (Khả năng không bỏ lọt lỗi)")
-    print(f"Điểm F1-Score (Lớp Lỗi)      : {f1_score:.4f} <--- CHỈ SỐ QUAN TRỌNG NHẤT")
-    print("="*50)
+    print(f"Điểm F1-Score (Lớp Lỗi)      : {f1_score:.4f}")
