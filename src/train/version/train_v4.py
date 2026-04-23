@@ -101,11 +101,10 @@ def train_model_with_validation():
     
     # --- DATA & MODEL SETUP ---
     root_dir = "./data/raw"
-    # Đã sửa lỗi "HUK," thành "HUK"
     train_speakers = ["ABA", "ASI", "BWC", "EBVS", "ERMS", 
                       "HUK", "HKK", "HQTV", "LXC", "MBMPS",
-                      "NCC", "NJS", "PNV", "RRBI", "SKA", "SVBI", "THV"] 
-    val_speakers = ["TLV", "TNI", "TXHC", "YBAA"]
+                      "NCC", "NJS", "PNV", "RRBI", "SKA", "SVBI", "THV", "TXHC", "YBAA"] 
+    val_speakers = ["TLV", "TNI"]
     
     train_loader = DataLoader(L2ArcticDataset(root_dir, train_speakers), batch_size=2, shuffle=True, collate_fn=MDDCollate(), num_workers=2)
     val_loader = DataLoader(L2ArcticDataset(root_dir, val_speakers), batch_size=2, shuffle=False, collate_fn=MDDCollate(), num_workers=2)
@@ -134,7 +133,7 @@ def train_model_with_validation():
         
         # Ghi log vào CSV
         csv_writer.writerow([epoch+1, train_loss, val_precision, val_recall, val_f1])
-        csv_file.flush() # Đẩy dữ liệu vào file ngay lập tức
+        csv_file.flush()
         
         # Ghi log lên TensorBoard
         tb_writer.add_scalar("Loss/Train", train_loss, epoch)
@@ -148,15 +147,12 @@ def train_model_with_validation():
         history['val_recall'].append(val_recall)
         history['val_f1'].append(val_f1)
         
-        # Kiểm tra Early Stopping
         early_stopping(val_f1, model)
         if early_stopping.early_stop:
             print("[!] Dừng sớm do mô hình không cải thiện.")
             break
 
-    # --- DỌN DẸP & XUẤT KẾT QUẢ CUỐI ---
     csv_file.close()
     tb_writer.close()
     
-    # Vẽ biểu đồ tổng kết
     plot_training_history(history)

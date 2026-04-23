@@ -58,7 +58,7 @@ class L2ArcticDataset(Dataset):
                 
         # Fallback an toàn
         for tier in tg.tiers:
-            # BỎ QUA CÁC TIER KHÔNG PHẢI ÂM VỊ (Như ví dụ bạn cung cấp)
+            # BỎ QUA CÁC TIER KHÔNG PHẢI ÂM VỊ
             if tier.name.lower() in ["words", "ipa", "comments"]:
                 continue
             non_empty = sum(1 for it in tier if (it.text and it.text.strip()))
@@ -140,7 +140,7 @@ class L2ArcticDataset(Dataset):
     def __getitem__(self, idx):
         item = self.data_items[idx]
         
-        # 1. Load và chuẩn hóa Audio bằng soundfile
+        # Load và chuẩn hóa Audio bằng soundfile
         # Chỉ định dtype='float32' để tương thích tốt nhất với PyTorch
         waveform_np, sr = sf.read(item['wav_path'], dtype='float32')
         
@@ -163,7 +163,7 @@ class L2ArcticDataset(Dataset):
         if sr != self.target_sr:
             waveform = torchaudio.functional.resample(waveform, orig_freq=sr, new_freq=self.target_sr)
 
-        # Squeeze mảng (1, Time) về mảng 1D (Time,) để đưa vào bộ feature extractor
+        # Squeeze mảng (1, Time) về mảng 1D (Time,) để đưa vào bộ
         audio_tensor = waveform.squeeze(0)
         audio_len = audio_tensor.shape[0]
 
@@ -175,8 +175,8 @@ class L2ArcticDataset(Dataset):
         canonical_ids, target_scores, phoneme_intervals = self._parse_textgrid(item['tg_path'])
 
         return {
-            "input_values": input_values,                 # Tensor: (T,)
-            "audio_len": audio_len,                       # Số nguyên: Độ dài mẫu
+            "input_values": input_values,                 # Tensor
+            "audio_len": audio_len,                       # Độ dài mẫu
             "canonical_ids": canonical_ids,               # Tensor: (N,)
             "target_scores": target_scores,               # Tensor: (N,)
             "phoneme_intervals": phoneme_intervals,       # Tensor: (N, 2)
@@ -185,9 +185,6 @@ class L2ArcticDataset(Dataset):
         }
 
 
-# ==========================================
-# 3. COLLATER CHO DATALOADER (Sửa lỗi Windows Multiprocessing)
-# ==========================================
 class MDDCollate:
     def __init__(self, pad_phoneme_id=0):
         self.pad_phoneme_id = pad_phoneme_id
