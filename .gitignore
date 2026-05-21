@@ -1,5 +1,6 @@
 # Data & model
 data/raw/
+data/user_audio
 checkpoints/
 
 

@@ -95,12 +95,16 @@ class MDDPredictor:
 
 #kiểm thử
 def predict():
-    # Điền đường dẫn tới file mô hình vừa lưu
-    MODEL_PATH = "./checkpoints/best_mdd_model_v2.pt"
+    MODEL_PATH = "./checkpoints/best_mdd_model_v4.pt"
     
     # test
-    TEST_WAV = "C:/Users/quang/Downloads/REC_260327_103705_1.wav"
-    TEST_TEXT = "Fear is an emotional response to a current perceived danger."
+    TEST_WAV = "C:/Users/quang/Downloads/voice/human/everyday_1.wav"
+    #TEST_WAV = "C:/Users/quang/Downloads/voice/ai/everyday.wav"
+    TEST_TEXT = "Every day is a new chance to grow."
+    # TEST_WAV = "C:/Users/quang/Downloads/voice/human/believe_1.wav"
+    # TEST_WAV = "C:/Users/quang/Downloads/voice/ai/believe.wav"
+    #TEST_TEXT = "Believe in yourself and never give up."
+
     
     predictor = MDDPredictor(model_path=MODEL_PATH)
     predictor.predict(wav_path=TEST_WAV, expected_text=TEST_TEXT)
