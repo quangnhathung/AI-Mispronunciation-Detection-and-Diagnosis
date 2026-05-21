@@ -105,3 +105,36 @@ train_model_v3(epochs=25)
 ```bash
 ./checkpoints/best_mdd_model_v3.pt
 ```
+
+**Start Application**
+
+- **Mục đích**: `main.py` là một CLI launcher tương tác (và khởi chạy GUI demo) để điều khiển các luồng chính của dự án: huấn luyện các phiên bản model (v1 → v4), chạy dự đoán, đánh giá model, và mở bản demo GUI.
+
+- **Yêu cầu trước khi chạy**: Python (3.8+ / 3.11 khuyến nghị), môi trường ảo đã kích hoạt và các thư viện đã được cài (xem phần "Comprehensive Environment Setup Guide").
+
+- **Chạy ứng dụng**: mở terminal tại thư mục gốc dự án và chạy:
+
+```bash
+conda activate mdd_ai   # nếu dùng conda
+cd path/to/MDD_AI       # chuyển đến thư mục dự án
+python main.py
+```
+
+- **Hướng dẫn tương tác (menu của `main.py`)**: sau khi chạy, chương trình hiện menu số (1 → 7). Nhập số tương ứng rồi Enter.
+  - **[1] Train model v1.0**: Bắt đầu huấn luyện phiên bản `train_model` — chương trình sẽ hỏi `Epoch` (nhập số nguyên).
+  - **[2] Train model v2.0**: Bắt đầu huấn luyện `train_model_v2` — chương trình sẽ hỏi `Epoch`.
+  - **[3] Train model v3.0**: Bắt đầu huấn luyện `train_model_v3` — chương trình sẽ hỏi `Epochs`.
+  - **[4] Train model v4.0 (add validate)**: Chạy `train_model_with_validation()` (phiên bản có bước validation tự động), không yêu cầu nhập epochs tương tác.
+  - **[5] Run predict (latest_v4.0)**: Chạy pipeline dự đoán `predict()` dùng checkpoint gần nhất (phiên bản v4).
+  - **[6] evaluate model (latest_v4.0)**: Chạy `evaluate_model()` để đánh giá model đã huấn luyện trên tập test / validation.
+  - **[7] Run demo application**: Mở giao diện demo dựa trên `tkinter` — khởi tạo `MDDApp` từ [src/application/app.py](src/application/app.py#L1) và gọi `root.mainloop()` để chạy GUI.
+
+- **Hành vi thêm**:
+  - Trước mỗi hành động chương trình gọi `os.system('cls' if os.name == 'nt' else 'clear')` để dọn màn hình (Windows → `cls`).
+  - Nếu nhập lựa chọn không hợp lệ, chương trình in `Invalid choice`, dọn màn hình và thoát hoặc quay lại tùy logic cục bộ.
+
+- **Checkpoint & kết quả**: các checkpoint tốt nhất được lưu trong thư mục [checkpoints](checkpoints) (ví dụ: `best_mdd_model_v3.pt`, `best_mdd_model_v4.pt`). Kiểm tra đường dẫn này để tìm model đã lưu.
+
+- **Ghi chú chạy GUI**: `Run demo application` cần `tkinter` (thường có sẵn trong Python tiêu chuẩn trên Windows). Đóng cửa sổ GUI để kết thúc ứng dụng.
+
+Nếu cần, tôi có thể bổ sung ví dụ lệnh chạy cụ thể cho từng chế độ (ví dụ cách truyền tham số, hoặc cách gọi trực tiếp các hàm training từ script khác).
